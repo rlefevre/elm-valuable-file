@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Elm MD5 port</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="elm.js"></script>
+</head>
+
+<body>
+  <main></main>
+  <script>
+    var app = Elm.Main.init({ node: document.querySelector('main') })
+    var myWorker = new Worker('worker.js');
+    myWorker.onmessage = function (e) {
+      app.ports.gotFile.send(e.data);
+    };
+
+    app.ports.sendFile.subscribe(function(file) {
+      myWorker.postMessage(file);
+    });
+  </script>
+</body>
+
+</html>
